@@ -92,7 +92,7 @@ class LocalStorage():
 
     def get(self, filename):
         with open(self.folder_name+"/"+filename, 'rb') as fh:
-            data = cloudpickle.load(fh)
+            data = cloudpickle.loads(fh.read())
         return data
 
     def delete(self,filename):
