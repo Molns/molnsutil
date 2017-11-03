@@ -195,7 +195,7 @@ class SwiftProvider():
         
         s3config = get_s3config()
 
-        if s3config["auth_version"] == 3:
+        if int(s3config["auth_version"]) == 3:
             v2config = s3config["credentials"]
             v3config = {}
             v3config["user_domain_name"] = "snic"
