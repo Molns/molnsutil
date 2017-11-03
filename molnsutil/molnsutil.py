@@ -189,8 +189,24 @@ class S3Provider():
 
 class SwiftProvider():
     def __init__(self, bucket_name):
+        
         s3config = get_s3config()
-        self.connection = swiftclient.client.Connection(auth_version=2.0,**s3config['credentials'])
+
+        if s3config["auth_version"] == 3:
+            v2config = s3config["credentials"]
+            v3config = {}
+            v3config["user_domain_name"] = "snic"
+            v3config["project_domain_name"] = "snic"
+            v3config["username"]=v2config["user"]
+            v3config["auth_url"] = v2config["authurl"]
+            v3config["password"] = v2config["key"]
+            v3config["project_name"] = v2config["tenant_name"]
+            auth = v3.Password(**v3config)
+            keystone_session = session.Session(auth=auth)
+            self.connection = swiftclient.client.Connection(session=keystone_session)
+        else:
+            self.connection = swiftclient.client.Connection(auth_version=s3config["auth_version"],**s3config['credentials'])
+
         self.set_bucket(bucket_name)
 
     def set_bucket(self,bucket_name):
