@@ -40,6 +40,9 @@ import random
 import copy
 
 import swiftclient.client
+from keystoneauth1 import session
+from keystoneauth1.identity import v3
+
 import IPython.parallel
 import uuid
 from IPython.display import HTML, Javascript, display
